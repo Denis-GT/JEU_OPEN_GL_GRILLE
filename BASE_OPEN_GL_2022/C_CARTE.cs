@@ -16,6 +16,7 @@ namespace BASE_OPEN_GL
       public int Taille_Carte_X;
       public int Taille_Carte_Y;
       public int[,] Ma_Carte;
+      public int Nombre_Murs;
 
 
       public C_CARTE(int P_Taille_Carte_X, int P_Taille_Carte_Y)
@@ -23,6 +24,7 @@ namespace BASE_OPEN_GL
          Ma_Carte = new int[P_Taille_Carte_X, P_Taille_Carte_Y];
          Taille_Carte_X = P_Taille_Carte_X;
          Taille_Carte_Y = P_Taille_Carte_Y;
+         Nombre_Murs = P_Taille_Carte_X + P_Taille_Carte_Y;
       }
 
 
@@ -103,7 +105,7 @@ namespace BASE_OPEN_GL
 
       public void Initialise_Murs_Random()
       {
-         for (int Compteur = 0; Compteur < Mur.Nombre; Compteur++) {
+         for (int Compteur = 0; Compteur < Nombre_Murs; Compteur++) {
             Mur.X = 1 + Generateur.Next() % (Taille_Carte_X - 2);
             Mur.Y = Generateur.Next() % (Taille_Carte_Y - 2) + 1;
 

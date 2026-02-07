@@ -15,7 +15,6 @@ namespace BASE_OPEN_GL
   {
     new public int Code = 1;
 
-    public int Nombre = 40;
     public int X;
     public int Y;
 

@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using Newtonsoft.Json;
+using OpenGLDotNet;
+using System;
 using System.Diagnostics;
+using System.IO;
 using System.IO.Ports;
 using System.Security.Policy;
 using System.Text;
 using System.Threading;
-using Microsoft.SqlServer.Server;
-using OpenGLDotNet;
 
 
 
@@ -13,7 +15,17 @@ namespace BASE_OPEN_GL
 {
   class C_MONDE
   {
-    public C_CARTE Carte = new C_CARTE();
+      C_CONFIGURATION_JEU Configuration_Jeu;
+
+      public C_CARTE Carte;
+      public C_MONDE()
+      {
+         string Data_Json = File.ReadAllText("CONFIGURATION_JEU.json");
+         Configuration_Jeu = JsonConvert.DeserializeObject<C_CONFIGURATION_JEU>(Data_Json);
+         int X = Configuration_Jeu.Taille_Carte_X < 3 ? 3 : Configuration_Jeu.Taille_Carte_X;
+         int Y = Configuration_Jeu.Taille_Carte_Y < 3 ? 3 : Configuration_Jeu.Taille_Carte_Y;
+         Carte = new C_CARTE(X, Y);
+      }
 
     //....................................
 
@@ -76,7 +88,13 @@ namespace BASE_OPEN_GL
 
     public void Afficher_Carte()
     {
-      GL.Translated(-10, -9.5, 0);
+         double X = Configuration_Jeu.Taille_Carte_X * -0.5;
+         double Y = Configuration_Jeu.Taille_Carte_Y * -0.475;
+         double Z = -((Configuration_Jeu.Taille_Carte_X + Configuration_Jeu.Taille_Carte_Y) /2 ) + 20;
+         if (Z < -80) Z = -80;
+      //GL.Translated(X, -9.5, 0);
+
+      GL.Translated(X, Y, Z);
       Carte.Afficher();
     }
 

@@ -6,19 +6,25 @@ using System.Threading.Tasks;
 using OpenGLDotNet;
 using System.Media;
 
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.IO;
 
 namespace BASE_OPEN_GL
 {
    public class C_CARTE
    {
+      public int Taille_Carte_X;
+      public int Taille_Carte_Y;
+      public int[,] Ma_Carte;
 
 
-      public int Taille_Carte = 20;
-      public int[,] Ma_Carte = new int[20, 20];
+      public C_CARTE(int P_Taille_Carte_X, int P_Taille_Carte_Y)
+      {
+         Ma_Carte = new int[P_Taille_Carte_X, P_Taille_Carte_Y];
+         Taille_Carte_X = P_Taille_Carte_X;
+         Taille_Carte_Y = P_Taille_Carte_Y;
+      }
 
-      //List<List<int>> Ma_Carte = new List<List<int>>();
 
       Random Generateur = new Random();
 
@@ -87,19 +93,19 @@ namespace BASE_OPEN_GL
       public void Initialise_Limite()
       {
          Ma_Carte[Personnage.Position_X, Personnage.Position_Y] = Personnage.Code;
-         for (int Index = 0; Index < Taille_Carte; Index++) {
+         for (int Index = 0; Index < Taille_Carte_X; Index++) {
             Ma_Carte[Index, 0] = Mur.Code;
-            Ma_Carte[Index, Taille_Carte - 1] = Mur.Code;
+            Ma_Carte[Index, Taille_Carte_Y - 1] = Mur.Code;
             Ma_Carte[0, Index] = Mur.Code;
-            Ma_Carte[Taille_Carte - 1, Index] = Mur.Code;
+            Ma_Carte[Taille_Carte_X - 1, Index] = Mur.Code;
          }
       }
 
       public void Initialise_Murs_Random()
       {
          for (int Compteur = 0; Compteur < Mur.Nombre; Compteur++) {
-            Mur.X = 1 + Generateur.Next() % (Taille_Carte - 2);
-            Mur.Y = Generateur.Next() % (Taille_Carte - 2) + 1;
+            Mur.X = 1 + Generateur.Next() % (Taille_Carte_X - 2);
+            Mur.Y = Generateur.Next() % (Taille_Carte_Y - 2) + 1;
 
             if (Ma_Carte[Mur.X, Mur.Y] == 0) {
                Ma_Carte[Mur.X, Mur.Y] = Mur.Code;
@@ -111,8 +117,8 @@ namespace BASE_OPEN_GL
       {
          Innitialise_Super_Consommables();
          for (int Compteur = 0; Compteur < Consommable.Nombre; Compteur++) {
-            Consommable.X = 1 + Generateur.Next() % (Taille_Carte - 2);
-            Consommable.Y = Generateur.Next() % (Taille_Carte - 2) + 1;
+            Consommable.X = 1 + Generateur.Next() % (Taille_Carte_X - 2);
+            Consommable.Y = Generateur.Next() % (Taille_Carte_Y - 2) + 1;
 
             if (Ma_Carte[Consommable.X, Consommable.Y] == 0) {
                Ma_Carte[Consommable.X, Consommable.Y] = Consommable.Code;
@@ -123,8 +129,8 @@ namespace BASE_OPEN_GL
       public void Innitialise_Super_Consommables()
       {
          for (int Compteur = 0; Compteur < Super_Consommable.Nombre; Compteur++) {
-            Super_Consommable.X = 1 + Generateur.Next() % (Taille_Carte - 2);
-            Super_Consommable.Y = Generateur.Next() % (Taille_Carte - 2) + 1;
+            Super_Consommable.X = 1 + Generateur.Next() % (Taille_Carte_X - 2);
+            Super_Consommable.Y = Generateur.Next() % (Taille_Carte_Y - 2) + 1;
 
             if (Ma_Carte[Super_Consommable.X, Super_Consommable.Y] == 0) {
                Ma_Carte[Super_Consommable.X, Super_Consommable.Y] = Super_Consommable.Code;
@@ -137,8 +143,8 @@ namespace BASE_OPEN_GL
          int RDM_Super_Consommable = Generateur.Next() % (7 + 1);
          int NB_Consommable = Generateur.Next() % (4 + 1);
          for (int Compteur = 0; Compteur < NB_Consommable; Compteur++) {
-            Consommable.X = 1 + Generateur.Next() % (Taille_Carte - 2);
-            Consommable.Y = Generateur.Next() % (Taille_Carte - 2) + 1;
+            Consommable.X = 1 + Generateur.Next() % (Taille_Carte_X - 2);
+            Consommable.Y = Generateur.Next() % (Taille_Carte_Y - 2) + 1;
             if (Ma_Carte[Consommable.X, Consommable.Y] == 0) {
                if (RDM_Super_Consommable == 1) {
                   Ma_Carte[Consommable.X, Consommable.Y] = Super_Consommable.Code;
@@ -155,7 +161,7 @@ namespace BASE_OPEN_GL
          Personnage.Direction_Y = P_Direction_Y;
          int Prochaine_Case_X = Personnage.Position_X + Personnage.Direction_X;
          int Prochaine_Case_Y = Personnage.Position_Y + Personnage.Direction_Y;
-         if (Prochaine_Case_X < Taille_Carte && Prochaine_Case_X > 0 && Prochaine_Case_Y < Taille_Carte && Prochaine_Case_Y > 0) {
+         if (Prochaine_Case_X < Taille_Carte_X && Prochaine_Case_X > 0 && Prochaine_Case_Y < Taille_Carte_Y && Prochaine_Case_Y > 0) {
             int Ma_Carte_Prochaine_Case = Ma_Carte[Prochaine_Case_X, Prochaine_Case_Y];
             if (Ma_Carte_Prochaine_Case == 0) {
                Personnage.Deplacement();
@@ -195,9 +201,9 @@ namespace BASE_OPEN_GL
 
       public void Afficher()
       {
-         for (int Index_X = 0; Index_X < Ma_Carte.GetLength(0); Index_X++) {
+         for (int Index_X = 0; Index_X < Taille_Carte_X; Index_X++) {
 
-            for (int Index_Y = 0; Index_Y < Ma_Carte.GetLength(1); Index_Y++) {
+            for (int Index_Y = 0; Index_Y < Taille_Carte_Y; Index_Y++) {
                GL.PushMatrix();
                GL.Translated(Index_X, Index_Y, 0);
                switch (Ma_Carte[Index_X, Index_Y]) {
@@ -225,14 +231,14 @@ namespace BASE_OPEN_GL
       public void Sauvegarde(string P_Nom)
       {
          var Ma_Liste = new List<List<int>>();
-         for (int Index_Y = 0; Index_Y < Ma_Carte.GetLength(0); Index_Y++) {
+         for (int Index_Y = 0; Index_Y < Taille_Carte_X; Index_Y++) {
             var Colonne_X = new List<int>();
-            for (int Index_X = 0; Index_X < Ma_Carte.GetLength(1); Index_X++) {
+            for (int Index_X = 0; Index_X < Taille_Carte_Y; Index_X++) {
                Colonne_X.Add(Ma_Carte[Index_Y, Index_X]);
             }
             Ma_Liste.Add(Colonne_X);
          }
-         string Data_Json = JsonSerializer.Serialize(Ma_Liste);
+         string Data_Json = JsonConvert.SerializeObject(Ma_Liste);
          File.WriteAllText(P_Nom, Data_Json);
       }
 
@@ -244,7 +250,7 @@ namespace BASE_OPEN_GL
 
 
             var Ma_Liste = new List<List<int>>();
-            Ma_Liste = JsonSerializer.Deserialize<List<List<int>>>(Data_Json);
+            Ma_Liste = JsonConvert.DeserializeObject<List<List<int>>>(Data_Json);
 
             int Lignes = Ma_Liste.Count;
             int Colonnes = Ma_Liste[0].Count;

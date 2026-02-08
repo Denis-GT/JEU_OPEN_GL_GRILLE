@@ -1,4 +1,5 @@
 {
-  "TailleCarteX" : 100,
-  "TailleCarteY" : 100
+  "TailleCarteX": 100,
+  "TailleCarteY": 100,
+  "IntervalDeplacementPersonnage": 200
 }

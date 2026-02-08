@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace BASE_OPEN_GL
 {
-  class C_DECOR
+  public class C_DECOR
   {
     public bool Son = true;
     public bool Pos_Souris_Info = true;

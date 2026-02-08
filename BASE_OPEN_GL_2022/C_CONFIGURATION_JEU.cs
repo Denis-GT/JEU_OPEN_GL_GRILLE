@@ -14,5 +14,8 @@ namespace BASE_OPEN_GL
 
       [JsonProperty("TailleCarteY")]
       public int Taille_Carte_Y;
+
+      [JsonProperty("IntervalDeplacementPersonnage")]
+      public int Interval_Deplacement_Personnage;
    }
 }

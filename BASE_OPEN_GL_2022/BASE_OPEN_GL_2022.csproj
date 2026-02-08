@@ -82,7 +82,6 @@
     <Compile Include="C_CONFIGURATION_JEU.cs" />
     <Compile Include="C_CONSOMMABLE.cs" />
     <Compile Include="C_DECOR.cs" />
-    <Compile Include="C_DIRECTION_BALLE.cs" />
     <Compile Include="C_MONDE.cs" />
     <Compile Include="C_MUR.cs" />
     <Compile Include="C_OBJETS_GRAPHIQUES.cs" />

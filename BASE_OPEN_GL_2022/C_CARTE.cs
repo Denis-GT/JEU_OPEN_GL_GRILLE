@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 using OpenGLDotNet;
-using System.Media;
-
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Media;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BASE_OPEN_GL
 {
@@ -159,6 +159,8 @@ namespace BASE_OPEN_GL
 
       public void Deplacer_Balle(int P_Direction_X, int P_Direction_Y)
       {
+         Task.Run(() => Console.Beep(100, 50));
+
          Personnage.Direction_X = P_Direction_X;
          Personnage.Direction_Y = P_Direction_Y;
          int Prochaine_Case_X = Personnage.Position_X + Personnage.Direction_X;
@@ -177,7 +179,7 @@ namespace BASE_OPEN_GL
                   Ma_Carte[Personnage.Precedente_Position_Personnage_X, Personnage.Precedente_Position_Personnage_Y] = 0;
                   Decor.Score += 1;
                   if (Decor.Son == true) {
-                     Task.Run(() => Console.Beep(200, 50));
+                     Task.Run(() => Console.Beep(200, 70));
                   }
                   Ajoute_Consommable_Random();
                }
@@ -187,7 +189,9 @@ namespace BASE_OPEN_GL
                   Ma_Carte[Personnage.Position_X, Personnage.Position_Y] = Personnage.Code;
                   Ma_Carte[Personnage.Precedente_Position_Personnage_X, Personnage.Precedente_Position_Personnage_Y] = 0;
                   if (Decor.Son == true) {
-                     Task.Run(() => Console.Beep(400, 50));
+                     Task.Run(() => Console.Beep(100, 70));
+                     Task.Run(() => Console.Beep(200, 100));
+                     Task.Run(() => Console.Beep(300, 120));
                   }
                   Ajoute_Consommable_Random();
                }
